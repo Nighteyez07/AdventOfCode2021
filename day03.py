@@ -3,6 +3,52 @@
 def split(item):
     return list(item)
 
+def filterOxy(array, position):
+    returnArr = []
+    onCnt = 0
+    offCnt = 0
+    keep = ""
+
+    for item in array:
+        if item[position] == "1":
+            onCnt = onCnt + 1
+        else:
+            offCnt = offCnt + 1
+
+    if onCnt >= offCnt:
+        keep = "1"
+    else:
+        keep = "0"
+
+    for item in array:
+        if item[position] == keep:
+            returnArr.append(item)    
+
+    return returnArr
+
+def filterCO2(array, position):
+    returnArr = []
+    onCnt = 0
+    offCnt = 0
+    keep = ""
+
+    for item in array:
+        if item[position] == "1":
+            onCnt = onCnt + 1
+        else:
+            offCnt = offCnt + 1
+
+    if offCnt <= onCnt:
+        keep = "0"
+    else:
+        keep = "1"
+
+    for item in array:
+        if item[position] == keep:
+            returnArr.append(item)    
+
+    return returnArr
+
 dataset = []
 gamma = ""
 epsilon = ""
@@ -33,14 +79,21 @@ for x in range(listLen):
 gammaVal = int(gamma, 2)
 epiVal = int(epsilon, 2)
 
-print(gammaVal * epiVal)
+oxyarr = dataset
+pos = 0
 
+while len(oxyarr) > 1:
+    oxyarr = filterOxy(oxyarr, pos)
+    pos = pos + 1
 
+co2rr = dataset
+pos = 0
 
-#convert to array
-#find gamma by most common bit in each position
-#find epsilon by least common bit (reverse of gamma in each position
+while len(co2rr) > 1:
+    co2rr = filterCO2(co2rr, pos)
+    pos = pos + 1
 
-#convert gamma to decimal
-#convert epsilon to decimal
-#multiply them together
+oxyVal = int(''.join(oxyarr[0]), 2)
+co2Val = int(''.join(co2rr[0]), 2)
+
+print(oxyVal * co2Val)
